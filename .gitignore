@@ -1,0 +1,5 @@
+# JetBrains IDE 설정 폴더
+.idea/
+
+# macOS의 Finder 메타파일
+.DS_Store
