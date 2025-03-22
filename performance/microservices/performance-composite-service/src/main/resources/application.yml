@@ -1,0 +1,17 @@
+server:
+  port: 8000
+  error:
+    include-message: always
+
+app:
+  performance-service:
+    host: localhost
+    port: 8001
+  hall-service:
+    host: localhost
+    port: 8002
+
+logging:
+  level:
+    root: INFO
+    com.msa: DEBUG
