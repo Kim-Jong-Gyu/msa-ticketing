@@ -2,22 +2,20 @@ package com.performance.microservices.composite.performance.services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.performance.api.composite.performance.PerformanceCompositeService;
-import com.performance.api.composite.performance.ScheduleSummaryWithSeats;
-import com.performance.api.composite.performance.ServiceAddresses;
-import com.performance.api.core.hall.Seat;
-import com.performance.api.core.performance.Performance;
 import com.performance.api.composite.performance.PerformanceAggregate;
+import com.performance.api.composite.performance.PerformanceCompositeService;
 import com.performance.api.composite.performance.PerformanceSeat;
 import com.performance.api.composite.performance.ScheduleSummary;
+import com.performance.api.composite.performance.ScheduleSummaryWithSeats;
+import com.performance.api.composite.performance.ServiceAddresses;
 import com.performance.api.core.hall.Hall;
+import com.performance.api.core.hall.Seat;
+import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.Schedule;
 import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;
@@ -28,6 +26,7 @@ public class PerformanceCompositeServiceImpl implements PerformanceCompositeServ
 	private final ServiceUtil serviceUtil;
 
 	private final PerformanceCompositeIntegration integration;
+
 
 	@Autowired
 	public PerformanceCompositeServiceImpl(ServiceUtil serviceUtil, PerformanceCompositeIntegration integration) {

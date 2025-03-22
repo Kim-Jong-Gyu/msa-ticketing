@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +34,6 @@ class PerformanceCompositeServiceApplicationTest {
 	private static final int HALL_ID_OK = 1;
 
 	private static final int HALL_ID_NOT_FOUND = 2;
-
 
 
 	@Autowired
