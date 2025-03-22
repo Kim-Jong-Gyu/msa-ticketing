@@ -1,11 +1,9 @@
-#!/usr/bin/env bash
+# script를 통해 마이크로 서비스 환경을 자동으로 시작하고, 필요한 모든 테스트를 실행
 #
-# Sample usage:
 #
-#   HOST=localhost PORT=7000 ./test-em-all.zsh
 #
 : ${HOST=localhost}
-: ${PORT=8000}
+: ${PORT=8080}
 
 function assertCurl() {
 
@@ -45,11 +43,55 @@ function assertEqual() {
     exit 1
   fi
 }
+
+function testUrl() {
+  url=$@
+  if curl $url -ks -f -o /dev/null
+  then
+      echo "Ok"
+      return 0
+  else
+      echo -n "not yet"
+      return 1
+  fi;
+}
+
+
+function waitForService() {
+  url=$@
+  echo -n "Wait for: $url... "
+  n=0
+  until testUrl $url
+  do
+      n=$((n + 1))
+      if [[ $n == 100 ]]
+      then
+          echo " Give up"
+          exit 1
+      else
+          sleep 6
+          echo -n ", retry #$n "
+      fi
+  done
+}
+
 set -e
+
+echo "Start:" `date`
 
 echo "HOST=${HOST}"
 echo "PORT=${PORT}"
 
+if [[ $@ == *"start"* ]]
+then
+    echo "Restarting the test environment..."
+    echo "$ docker-compose down"
+    docker-compose down
+    echo "$ docker-compose up -d"
+    docker-compose up -d
+fi
+
+waitForService http://$HOST:$PORT/performance-composite/performance/1
 
 # Verify that a normal request works, expect three recommendations and three reviews
 assertCurl 200 "curl http://$HOST:$PORT/performance-composite/performance/1 -s"
@@ -59,3 +101,12 @@ assertEqual 40 $(echo $RESPONSE | jq ".scheduleSummaryWithSeatsList[0].performan
 
 # Verify that a 404 (Not Found) error is returned for a non existing productId (13)
 assertCurl 404 "curl http://$HOST:$PORT/product-composite/performance/13 -s"
+
+if [[ $@ == *"stop"* ]]
+then
+    echo "We are done, stopping the test environment..."
+    echo "$ docker-compose down"
+    docker-compose down
+fi
+
+echo "End:" `date`

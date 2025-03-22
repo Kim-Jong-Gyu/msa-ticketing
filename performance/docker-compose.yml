@@ -1,0 +1,22 @@
+version: '2.1'
+
+services:
+  performance:
+    build: microservices/performance-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  hall:
+    build: microservices/hall-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  performance-composite:
+    build: microservices/performance-composite-service
+    mem_limit: 350m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

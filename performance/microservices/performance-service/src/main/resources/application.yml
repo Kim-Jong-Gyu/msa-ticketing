@@ -6,4 +6,12 @@ server:
 logging:
   level:
     root: INFO
-    com.msa: DEBUG
+    com:
+      performance: DEBUG
+
+---
+spring:
+  profiles:
+    active: docker
+
+server.port: 8080

@@ -14,4 +14,19 @@ app:
 logging:
   level:
     root: INFO
-    com.msa: DEBUG
+    com.performance: DEBUG
+
+---
+spring:
+  profiles:
+    active: docker
+
+server.port: 8080
+
+app:
+  performance-service:
+    host: performance
+    port: 8080
+  hall-service:
+    host: hall
+    port: 8080

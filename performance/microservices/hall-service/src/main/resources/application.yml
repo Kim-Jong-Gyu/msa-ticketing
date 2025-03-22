@@ -6,4 +6,11 @@ server:
 logging:
   level:
     root: INFO
-    com.performance.microservices: DEBUG
+    com.performance: DEBUG
+
+---
+spring:
+  profiles:
+    active: docker
+
+server.port: 8080

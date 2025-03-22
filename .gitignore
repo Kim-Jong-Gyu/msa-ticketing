@@ -1,5 +1,25 @@
-# JetBrains IDE 설정 폴더
-.idea/
-
-# macOS의 Finder 메타파일
+# macOS
 .DS_Store
+
+# IntelliJ
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+
+# Gradle
+.gradle/
+build/
+**/build/
+
+# 로그
+*.log
+
+# 백업 파일
+*.swp
+*.bak
+*~
+
+# 환경 설정
+.env
