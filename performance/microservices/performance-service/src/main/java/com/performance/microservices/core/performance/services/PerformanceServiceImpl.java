@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.PerformanceService;
 import com.performance.api.core.performance.ScheduleDto;
-import com.performance.api.core.type.SeatType;
 import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;
+import com.ticketing.performance.common.SeatType;
 
 @RestController
 public class PerformanceServiceImpl implements PerformanceService {
@@ -50,6 +50,11 @@ public class PerformanceServiceImpl implements PerformanceService {
 		return new Performance(performanceId, "title", pricePolicyArrayList, LocalDateTime.now().minusDays(1),
 			LocalDateTime.now().plusDays(1), scheduleList,
 			serviceUtil.getServiceAddress());
+	}
+
+	@Override
+	public Performance createPerformance(Performance performance) {
+
 	}
 
 }

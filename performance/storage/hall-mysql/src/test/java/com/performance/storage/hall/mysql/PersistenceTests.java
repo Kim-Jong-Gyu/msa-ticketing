@@ -1,4 +1,4 @@
-package com.performance.microservices.core.hall;
+package com.performance.storage.hall.mysql;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,23 +10,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.performance.api.core.type.SeatType;
-import com.performance.microservices.core.hall.persistence.HallEntity;
-import com.performance.microservices.core.hall.persistence.HallRepository;
-import com.performance.microservices.core.hall.persistence.SeatVO;
+import com.performance.storage.hall.mysql.config.JpaConfig;
+import com.ticketing.performance.common.SeatType;
 
 @DataJpaTest
+@Import({JpaConfig.class})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class PersistenceTests {
 
 
 	@Autowired
-	private HallRepository repository;
+	HallRepository repository;
+
 
 	private static final Integer DEFAULT_HALL_ID = 1;
 

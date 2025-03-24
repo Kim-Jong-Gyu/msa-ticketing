@@ -1,4 +1,4 @@
-package com.performance.microservices.core.hall.persistence;
+package com.performance.storage.hall.mysql;
 
 import java.util.List;
 

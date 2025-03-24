@@ -1,10 +1,10 @@
-package com.performance.microservices.core.hall.persistence;
+package com.performance.storage.hall.mysql;
 
-import com.performance.api.core.type.SeatType;
+import com.ticketing.performance.common.SeatType;
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

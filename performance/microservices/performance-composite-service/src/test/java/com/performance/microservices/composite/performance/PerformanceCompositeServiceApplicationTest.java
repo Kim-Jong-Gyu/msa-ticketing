@@ -20,7 +20,7 @@ import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
 import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.ScheduleDto;
-import com.performance.api.enums.SeatType;
+import com.performance.api.core.type.SeatType;
 import com.performance.microservices.composite.performance.services.PerformanceCompositeIntegration;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)

@@ -1,4 +1,4 @@
-package com.performance.microservices.core.performance.persistence;
+package com.performance.storage.performance.mongo;
 
 import java.util.Optional;
 

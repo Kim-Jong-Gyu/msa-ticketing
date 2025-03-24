@@ -1,4 +1,4 @@
-package com.performance.microservices.core.performance;
+package com.performance.storage.perforamnce.mogo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
@@ -19,21 +18,22 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.annotation.DirtiesContext;
 
 import org.springframework.dao.DuplicateKeyException;
-import com.performance.api.core.type.SeatType;
-import com.performance.microservices.core.performance.persistence.MongoConfig;
-import com.performance.microservices.core.performance.persistence.PerformanceEntity;
-import com.performance.microservices.core.performance.persistence.PerformanceRepository;
-import com.performance.microservices.core.performance.persistence.Schedule;
+
+import com.performance.storage.performance.mongo.config.ConvertConfig;
+import com.performance.storage.performance.mongo.PerformanceEntity;
+import com.performance.storage.performance.mongo.PerformanceRepository;
+import com.performance.storage.performance.mongo.Schedule;
+import com.performance.storage.performance.mongo.config.MongoDbConfig;
+import com.ticketing.performance.common.SeatType;
 
 // Embedded MongoDB
 @DataMongoTest(properties = "de.flapdoodle.mongodb.embedded.version=5.0.5")
 @DirtiesContext
-@Import(MongoConfig.class)
+@Import({ConvertConfig.class, MongoDbConfig.class})
 public class PersistenceTests {
 
 	@Autowired
 	private PerformanceRepository repository;
-
 
 	private static final Integer DEFAULT_PERFORMANCE_ID = 1;
 	@BeforeEach

@@ -1,13 +1,8 @@
 dependencies {
     implementation project(':api')
     implementation project(':util')
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testRuntimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-
-
+    implementation project(":common")
+    implementation project(":storage:hall-mysql")
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'io.projectreactor:reactor-test'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'

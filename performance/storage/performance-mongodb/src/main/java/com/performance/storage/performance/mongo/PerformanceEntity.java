@@ -1,4 +1,4 @@
-package com.performance.microservices.core.performance.persistence;
+package com.performance.storage.performance.mongo;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,12 +6,10 @@ import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.performance.api.core.type.SeatType;
+import com.ticketing.performance.common.SeatType;
 
 import lombok.AccessLevel;
 import lombok.Getter;

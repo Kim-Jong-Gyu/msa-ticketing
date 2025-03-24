@@ -1,0 +1,16 @@
+storage:
+  datasource:
+    core:
+      host: localhost
+      port: 27017
+      database: performance-db
+
+---
+spring.config.activate.on-profile: docker
+
+storage:
+  datasource:
+    core:
+      port:  27017
+      host: mongodb
+      database: performance-db
