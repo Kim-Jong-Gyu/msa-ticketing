@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.PerformanceService;
-import com.performance.api.core.performance.Schedule;
-import com.performance.api.enums.SeatType;
+import com.performance.api.core.performance.ScheduleDto;
+import com.performance.api.core.type.SeatType;
 import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;
@@ -44,8 +44,8 @@ public class PerformanceServiceImpl implements PerformanceService {
 		pricePolicyArrayList.put(SeatType.STANDARD, 10000);
 		pricePolicyArrayList.put(SeatType.VIP, 13000);
 
-		List<Schedule> scheduleList = new ArrayList<>();
-		scheduleList.add(new Schedule(1, LocalDateTime.now()));
+		List<ScheduleDto> scheduleList = new ArrayList<>();
+		scheduleList.add(new ScheduleDto(1, LocalDateTime.now()));
 
 		return new Performance(performanceId, "title", pricePolicyArrayList, LocalDateTime.now().minusDays(1),
 			LocalDateTime.now().plusDays(1), scheduleList,

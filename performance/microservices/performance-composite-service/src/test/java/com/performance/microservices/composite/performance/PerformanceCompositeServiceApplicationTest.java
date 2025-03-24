@@ -19,7 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
 import com.performance.api.core.performance.Performance;
-import com.performance.api.core.performance.Schedule;
+import com.performance.api.core.performance.ScheduleDto;
 import com.performance.api.enums.SeatType;
 import com.performance.microservices.composite.performance.services.PerformanceCompositeIntegration;
 
@@ -50,8 +50,8 @@ class PerformanceCompositeServiceApplicationTest {
 		map.put(SeatType.VIP, 14000);
 		map.put(SeatType.STANDARD, 10000);
 
-		List<Schedule> scheduleList = new ArrayList<>();
-		scheduleList.add(new Schedule(HALL_ID_OK, LocalDateTime.now().plusDays(4)));
+		List<ScheduleDto> scheduleList = new ArrayList<>();
+		scheduleList.add(new ScheduleDto(HALL_ID_OK, LocalDateTime.now().plusDays(4)));
 
 		char[] section = {'A', 'B', 'C', 'D'};
 		List<Seat> seatList = new ArrayList<>();
@@ -88,8 +88,8 @@ class PerformanceCompositeServiceApplicationTest {
 	@Test
 	public void getPerformanceNotFoundHall(){
 		// given
-		List<Schedule> scheduleList = new ArrayList<>();
-		scheduleList.add(new Schedule(HALL_ID_NOT_FOUND, LocalDateTime.now().plusDays(4)));
+		List<ScheduleDto> scheduleList = new ArrayList<>();
+		scheduleList.add(new ScheduleDto(HALL_ID_NOT_FOUND, LocalDateTime.now().plusDays(4)));
 		Map<SeatType, Integer> pricePolicy = Map.of(SeatType.VIP, 14000);
 
 		when(integration.getPerformance(PERFORMANCE_ID_OK_BUT_NOT_FOUND_HALL)).thenReturn(

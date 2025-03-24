@@ -16,7 +16,7 @@ import com.performance.api.composite.performance.ServiceAddresses;
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
 import com.performance.api.core.performance.Performance;
-import com.performance.api.core.performance.Schedule;
+import com.performance.api.core.performance.ScheduleDto;
 import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;
 
@@ -42,7 +42,7 @@ public class PerformanceCompositeServiceImpl implements PerformanceCompositeServ
 			throw new NotFoundException("No performance found for performanceId: " + performanceId);
 
 		List<Hall> hallList = new ArrayList<>();
-		for (Schedule schedule : performance.scheduleList()) {
+		for (ScheduleDto schedule : performance.scheduleList()) {
 			Hall hall = integration.getHall(schedule.hallId());
 			if (hall == null)
 				throw new NotFoundException("No hall found for hallId: " + schedule.hallId());
@@ -58,7 +58,7 @@ public class PerformanceCompositeServiceImpl implements PerformanceCompositeServ
 		for (int i = 0; i < hallList.size(); i++) {
 			List<PerformanceSeat> performanceSeats = new ArrayList<>();
 			String hallName = hallList.get(i).hallName();
-			Schedule nowSchedule = performance.scheduleList().get(i);
+			ScheduleDto nowSchedule = performance.scheduleList().get(i);
 			LocalDateTime performanceDate = nowSchedule.performanceDate();
 			Integer hallId = nowSchedule.hallId();
 			for (Seat seat : hallList.get(i).seatList()) {

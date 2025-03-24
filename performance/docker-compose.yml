@@ -1,20 +1,54 @@
 services:
   performance:
     build: microservices/performance-service
-    mem_limit: 400m
+    mem_limit: 350m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongodb
 
   hall:
     build: microservices/hall-service
-    mem_limit: 400m
+    mem_limit: 350m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   performance-composite:
     build: microservices/performance-composite-service
-    mem_limit: 400m
+    mem_limit: 350m
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
+  mongodb:
+    image: mongo
+    mem_limit: 350m
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    command: ["mongod", "--dbpath", "/data/db"]
+
+
+  mysql:
+    image: mysql
+    mem_limit: 350m
+    ports:
+      - "3307:3307"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=hall-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-uuser", "-ppwd", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mongodb_data:

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.HallService;
 import com.performance.api.core.hall.Seat;
-import com.performance.api.enums.SeatType;
+import com.performance.api.core.type.SeatType;
 import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;

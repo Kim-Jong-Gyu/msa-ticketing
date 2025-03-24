@@ -3,6 +3,15 @@ server:
   error:
     include-message: always
 
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: performance-db
+      auto-index-creation: true
+
+
 logging:
   level:
     root: INFO
@@ -13,5 +22,8 @@ logging:
 spring:
   profiles:
     active: docker
+#  data:
+#    mongodb:
+#      host: mongodb
 
 server.port: 8080
