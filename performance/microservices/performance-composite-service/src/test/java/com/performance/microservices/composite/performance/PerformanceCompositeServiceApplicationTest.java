@@ -20,8 +20,8 @@ import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
 import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.ScheduleDto;
-import com.performance.api.core.type.SeatType;
 import com.performance.microservices.composite.performance.services.PerformanceCompositeIntegration;
+import com.ticketing.performance.common.SeatType;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import(MockBeanConfig.class)

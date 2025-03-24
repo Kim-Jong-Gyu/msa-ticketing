@@ -52,9 +52,5 @@ public class PerformanceServiceImpl implements PerformanceService {
 			serviceUtil.getServiceAddress());
 	}
 
-	@Override
-	public Performance createPerformance(Performance performance) {
-
-	}
 
 }
