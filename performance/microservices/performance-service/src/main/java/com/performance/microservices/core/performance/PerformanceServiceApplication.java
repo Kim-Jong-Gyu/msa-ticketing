@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -17,10 +19,8 @@ public class PerformanceServiceApplication {
 	public static void main(String[] args) {
 
 		ConfigurableApplicationContext ctx = SpringApplication.run(PerformanceServiceApplication.class, args);
-
-		String mongoDbHost = ctx.getEnvironment().getProperty("spring.data.mongodb.host");
-		String mongoDbPort = ctx.getEnvironment().getProperty("spring.data.mongodb.port");
-		LOG.info("Connected to MongoDb: " + mongoDbHost + ":" + mongoDbPort);
+		MongoProperties mongoProperties = ctx.getBean(MongoProperties.class);
+		LOG.info("Connected to MongoDb: " + mongoProperties.getHost() + ":" + mongoProperties.getPort());
 	}
 
 

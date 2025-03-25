@@ -2,19 +2,21 @@ package com.performance.storage.performance.mongo;
 
 import java.time.LocalDateTime;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Schedule {
+public class ScheduleVo {
 
 	private Integer hallId;
 
 	private LocalDateTime performanceDate;
+
+	public ScheduleVo(Integer hallId, LocalDateTime performanceDate) {
+		this.hallId = hallId;
+		this.performanceDate = performanceDate;
+	}
 
 }

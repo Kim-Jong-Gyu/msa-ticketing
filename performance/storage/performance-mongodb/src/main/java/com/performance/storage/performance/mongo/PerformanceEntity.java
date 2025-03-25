@@ -37,10 +37,10 @@ public class PerformanceEntity {
 
 	private LocalDateTime bookingEndDate;
 
-	private List<Schedule> scheduleList;
+	private List<ScheduleVo> scheduleList;
 
 	public PerformanceEntity(Integer performanceId, String title, Map<SeatType, Integer> pricePolicies,
-		LocalDateTime bookingStartDate, LocalDateTime bookingEndDate, List<Schedule> scheduleList) {
+		LocalDateTime bookingStartDate, LocalDateTime bookingEndDate, List<ScheduleVo> scheduleList) {
 		this.performanceId = performanceId;
 		this.title = title;
 		this.pricePolicies = pricePolicies;

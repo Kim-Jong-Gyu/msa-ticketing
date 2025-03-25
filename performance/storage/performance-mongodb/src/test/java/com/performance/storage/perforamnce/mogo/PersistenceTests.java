@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -21,8 +22,8 @@ import org.springframework.dao.DuplicateKeyException;
 
 import com.performance.storage.performance.mongo.config.ConvertConfig;
 import com.performance.storage.performance.mongo.PerformanceEntity;
-import com.performance.storage.performance.mongo.PerformanceRepository;
-import com.performance.storage.performance.mongo.Schedule;
+import com.performance.storage.performance.mongo.MongoDbRepository;
+import com.performance.storage.performance.mongo.ScheduleVo;
 import com.performance.storage.performance.mongo.config.MongoDbConfig;
 import com.ticketing.performance.common.SeatType;
 
@@ -33,7 +34,7 @@ import com.ticketing.performance.common.SeatType;
 public class PersistenceTests {
 
 	@Autowired
-	private PerformanceRepository repository;
+	private MongoDbRepository repository;
 
 	private static final Integer DEFAULT_PERFORMANCE_ID = 1;
 	@BeforeEach
@@ -47,13 +48,13 @@ public class PersistenceTests {
 		LocalDateTime bookingStartDate = LocalDateTime.now();
 		LocalDateTime bookingEndDate = LocalDateTime.now().plusDays(1);
 
-		List<Schedule> scheduleList = new ArrayList<>();
+		List<ScheduleVo> scheduleVoList = new ArrayList<>();
 
-		scheduleList.add(new Schedule(1, LocalDateTime.now().plusDays(4)));
-		scheduleList.add(new Schedule(2, LocalDateTime.now().plusDays(5)));
+		scheduleVoList.add(new ScheduleVo(1, LocalDateTime.now().plusDays(4)));
+		scheduleVoList.add(new ScheduleVo(2, LocalDateTime.now().plusDays(5)));
 
 		PerformanceEntity newEntity = new PerformanceEntity(DEFAULT_PERFORMANCE_ID, title, pricePolicies, bookingStartDate,
-			bookingEndDate, scheduleList);
+			bookingEndDate, scheduleVoList);
 
 		repository.save(newEntity);
 	}
@@ -71,13 +72,13 @@ public class PersistenceTests {
 		LocalDateTime bookingStartDate = LocalDateTime.now();
 		LocalDateTime bookingEndDate = LocalDateTime.now().plusDays(1);
 
-		List<Schedule> scheduleList = new ArrayList<>();
+		List<ScheduleVo> scheduleVoList = new ArrayList<>();
 
-		scheduleList.add(new Schedule(1, LocalDateTime.now().plusDays(4)));
-		scheduleList.add(new Schedule(2, LocalDateTime.now().plusDays(5)));
+		scheduleVoList.add(new ScheduleVo(1, LocalDateTime.now().plusDays(4)));
+		scheduleVoList.add(new ScheduleVo(2, LocalDateTime.now().plusDays(5)));
 
 		PerformanceEntity newEntity = new PerformanceEntity(performanceId, title, pricePolicies, bookingStartDate,
-			bookingEndDate, scheduleList);
+			bookingEndDate, scheduleVoList);
 
 		// when
 		repository.save(newEntity);
@@ -130,14 +131,14 @@ public class PersistenceTests {
 		LocalDateTime bookingStartDate = LocalDateTime.now();
 		LocalDateTime bookingEndDate = LocalDateTime.now().plusDays(1);
 
-		List<Schedule> scheduleList = new ArrayList<>();
+		List<ScheduleVo> scheduleVoList = new ArrayList<>();
 
-		scheduleList.add(new Schedule(1, LocalDateTime.now().plusDays(4)));
-		scheduleList.add(new Schedule(2, LocalDateTime.now().plusDays(5)));
+		scheduleVoList.add(new ScheduleVo(1, LocalDateTime.now().plusDays(4)));
+		scheduleVoList.add(new ScheduleVo(2, LocalDateTime.now().plusDays(5)));
 
 		PerformanceEntity entity = new PerformanceEntity(DEFAULT_PERFORMANCE_ID, title, pricePolicies,
 			bookingStartDate,
-			bookingEndDate, scheduleList);
+			bookingEndDate, scheduleVoList);
 		// when
 		assertThrows(DuplicateKeyException.class, () -> repository.save(entity));
 	}

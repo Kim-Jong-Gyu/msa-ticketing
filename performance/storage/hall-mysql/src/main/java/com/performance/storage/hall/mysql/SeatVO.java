@@ -5,14 +5,13 @@ import com.ticketing.performance.common.SeatType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SeatVO {
 
 	Integer seatNumber;
@@ -23,5 +22,12 @@ public class SeatVO {
 	SeatType type;
 
 	Boolean isAvailable;
+
+	public SeatVO(Integer seatNumber, Character section, SeatType type, Boolean isAvailable){
+		this.seatNumber = seatNumber;
+		this.section = section;
+		this.type = type;
+		this.isAvailable = isAvailable;
+	}
 
 }

@@ -38,7 +38,7 @@ services:
     image: mysql
     mem_limit: 350m
     ports:
-      - "3307:3307"
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=rootpwd
       - MYSQL_DATABASE=hall-db

@@ -1,5 +1,7 @@
 package com.performance.storage.performance.mongo.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -16,18 +18,19 @@ import com.mongodb.client.MongoClients;
 @EntityScan(basePackages = "com.performance.storage.performance.mongo")
 public class MongoDbConfig {
 
+
 	@Value("${storage.datasource.core.host}")
 	private String host;
 
 	@Value("${storage.datasource.core.port}")
-	private int port;
+	private String port;
 
 	@Value("${storage.datasource.core.database}")
 	private String database;
 
 	@Bean
 	public MongoClient mongoClient() {
-		String uri = String.format("mongodb://%s:%d", host, port);
+		String uri = String.format("mongodb://%s:%d", host, Integer.parseInt(port));
 		return MongoClients.create(uri); // 기본 커넥션
 	}
 

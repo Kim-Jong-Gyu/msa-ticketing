@@ -24,9 +24,8 @@ import com.ticketing.performance.common.SeatType;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class PersistenceTests {
 
-
 	@Autowired
-	HallRepository repository;
+	HallJpaRepository repository;
 
 
 	private static final Integer DEFAULT_HALL_ID = 1;

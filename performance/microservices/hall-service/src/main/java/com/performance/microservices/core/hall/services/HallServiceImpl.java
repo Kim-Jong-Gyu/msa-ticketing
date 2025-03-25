@@ -1,8 +1,5 @@
 package com.performance.microservices.core.hall.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.HallService;
-import com.performance.api.core.hall.Seat;
-import com.performance.api.core.type.SeatType;
+import com.performance.storage.hall.mysql.HallEntity;
+import com.performance.storage.hall.mysql.HallRepository;
 import com.performance.util.exceptions.InvalidInputException;
-import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;
 
 @RestController
@@ -23,32 +19,35 @@ public class HallServiceImpl implements HallService {
 
 	private final ServiceUtil serviceUtil;
 
+	private final HallRepository repository;
+
+	private final HallMapper mapper;
+
 	@Autowired
-	public HallServiceImpl(ServiceUtil serviceUtil) {
+	public HallServiceImpl(ServiceUtil serviceUtil, HallRepository repository, HallMapper mapper) {
 		this.serviceUtil = serviceUtil;
+		this.repository = repository;
+		this.mapper = mapper;
 	}
 
 	@Override
-	public Hall getHall(int hallId) {
-
-		if(hallId < 1)
+	public Hall getHall(Integer hallId) {
+		if (hallId < 1)
 			throw new InvalidInputException("Invalid hallId: " + hallId);
 
-		if (hallId == 13)
-			throw new NotFoundException("No hall found for hallId " + hallId);
+		HallEntity entity = repository.findByHallId(hallId);
+		Hall response = mapper.entityToApi(entity);
+		response.setServiceAddress(serviceUtil.getServiceAddress());
+		return response;
+	}
 
-		char[] section = {'A', 'B', 'C', 'D'};
-		List<Seat> seatList = new ArrayList<>();
+	@Override
+	public Hall createHall(Hall body) {
 
-		for (char c : section) {
-			for (int j = 1; j <= 10; j++) {
-				seatList.add(new Seat(j, c, SeatType.STANDARD, true));
-			}
-		}
+		HallEntity entity = mapper.apiToEntity(body);
+		HallEntity newEntity = repository.save(entity);
 
-		Hall hall = new Hall(hallId, "예술의 전당", seatList, serviceUtil.getServiceAddress());
-
-		LOG.debug("/hall response get seat size: {}", hall.seatList().size());
-		return hall;
+		LOG.debug("createHall: entity created for hallId: {}", body.getHallId());
+		return mapper.entityToApi(newEntity);
 	}
 }

@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "halls")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class HallEntity {
 
 	@Id
@@ -38,7 +37,7 @@ public class HallEntity {
 	private String hallName;
 
 
-	@ElementCollection
+	@ElementCollection()
 	@CollectionTable(name = "seat", joinColumns = @JoinColumn(name = "hall_id"))
 	private List<SeatVO> seatList;
 

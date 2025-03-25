@@ -7,7 +7,7 @@ storage:
   datasource:
     core:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost/hall-db
+      jdbc-url: jdbc:mysql://localhost:3306/hall-db
       username: user
       password: pwd
       data-source-properties:

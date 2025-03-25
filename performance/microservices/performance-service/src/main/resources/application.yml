@@ -4,12 +4,9 @@ server:
     include-message: always
 
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: performance-db
-      auto-index-creation: true
+  config:
+    import:
+      - mongo-db.yml
 
 
 logging:
