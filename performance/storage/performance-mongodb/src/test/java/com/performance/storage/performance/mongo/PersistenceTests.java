@@ -1,4 +1,4 @@
-package com.performance.storage.perforamnce.mogo;
+package com.performance.storage.performance.mongo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,34 +7,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import org.springframework.dao.DuplicateKeyException;
+import com.performance.common.SeatType;
+import com.performance.storage.performance.mongo.persistence.PerformanceEntity;
+import com.performance.storage.performance.mongo.persistence.PerformanceRepository;
+import com.performance.storage.performance.mongo.persistence.ScheduleVo;
 
-import com.performance.storage.performance.mongo.config.ConvertConfig;
-import com.performance.storage.performance.mongo.PerformanceEntity;
-import com.performance.storage.performance.mongo.MongoDbRepository;
-import com.performance.storage.performance.mongo.ScheduleVo;
-import com.performance.storage.performance.mongo.config.MongoDbConfig;
-import com.ticketing.performance.common.SeatType;
-
-// Embedded MongoDB
-@DataMongoTest(properties = "de.flapdoodle.mongodb.embedded.version=5.0.5")
+@DataMongoTest
+@TestPropertySource(properties = "de.flapdoodle.mongodb.embedded.version=5.0.5")
 @DirtiesContext
-@Import({ConvertConfig.class, MongoDbConfig.class})
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = PerformanceApplication.class)
 public class PersistenceTests {
 
 	@Autowired
-	private MongoDbRepository repository;
+	private PerformanceRepository repository;
 
 	private static final Integer DEFAULT_PERFORMANCE_ID = 1;
 	@BeforeEach
@@ -62,7 +61,6 @@ public class PersistenceTests {
 
 	@Test
 	public void create() {
-
 		// given
 		Integer performanceId = 2;
 		String title = "title2";
@@ -94,13 +92,12 @@ public class PersistenceTests {
 		String newTitle = "new title";
 
 		// when
-
-		PerformanceEntity savedEntity = repository.findByPerformanceId(1).get();
+		PerformanceEntity savedEntity = repository.findByPerformanceId(1);
 		savedEntity.updateTitle(newTitle);
 		repository.save(savedEntity);
 
 		// then
-		PerformanceEntity foundEntity = repository.findById(savedEntity.getId()).get();
+		PerformanceEntity foundEntity = repository.findByPerformanceId(savedEntity.getPerformanceId());
 
 		assertEquals(1, foundEntity.getVersion());
 		assertEquals("new title", foundEntity.getTitle());
@@ -109,7 +106,7 @@ public class PersistenceTests {
 	@Test
 	public void delete() {
 
-		PerformanceEntity performanceEntity = repository.findByPerformanceId(1).get();
+		PerformanceEntity performanceEntity = repository.findByPerformanceId(1);
 		repository.delete(performanceEntity);
 
 		assertFalse(repository.existsById(performanceEntity.getId()));
@@ -117,8 +114,8 @@ public class PersistenceTests {
 
 	@Test
 	public void getByPerformanceId() {
-		Optional<PerformanceEntity> entity = repository.findByPerformanceId(1);
-		assertTrue(entity.isPresent());
+		PerformanceEntity entity = repository.findByPerformanceId(1);
+		assertNotNull(entity);
 	}
 
 	@Test
@@ -147,8 +144,8 @@ public class PersistenceTests {
 	// 낙관적 Lock Test
 	@Test
 	public void optimisticLockError(){
-		PerformanceEntity entity1 = repository.findByPerformanceId(DEFAULT_PERFORMANCE_ID).get();
-		PerformanceEntity entity2 = repository.findByPerformanceId(DEFAULT_PERFORMANCE_ID).get();
+		PerformanceEntity entity1 = repository.findByPerformanceId(DEFAULT_PERFORMANCE_ID);
+		PerformanceEntity entity2 = repository.findByPerformanceId(DEFAULT_PERFORMANCE_ID);
 
 		// 첫 번째 객체 update
 		entity1.updateTitle("test1");
@@ -162,7 +159,7 @@ public class PersistenceTests {
 		}catch (OptimisticLockingFailureException e) {}
 
 		// 데이터베이스에서 업데이트된 엔티티를 가져와서 새로운 값을 확인한다.
-		PerformanceEntity updateEntity = repository.findByPerformanceId(DEFAULT_PERFORMANCE_ID).get();
+		PerformanceEntity updateEntity = repository.findByPerformanceId(DEFAULT_PERFORMANCE_ID);
 		assertEquals(1, updateEntity.getVersion());
 		assertEquals("test1", updateEntity.getTitle());
 
