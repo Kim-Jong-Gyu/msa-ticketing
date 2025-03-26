@@ -1,4 +1,4 @@
-package com.performance.storage.hall.mysql;
+package com.performance.storage.hall.mysql.persistence;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,6 +1,4 @@
-package com.performance.storage.performance.mongo;
-
-import java.util.Optional;
+package com.performance.storage.performance.mongo.persistence;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
@@ -37,6 +35,21 @@ public class PerformanceRepositoryImpl implements PerformanceRepository{
 	@Override
 	public void deleteAll() {
 		mongoDbRepository.deleteAll();
+	}
+
+	@Override
+	public Integer count() {
+		return Math.toIntExact(mongoDbRepository.count());
+	}
+
+	@Override
+	public void delete(PerformanceEntity entity) {
+		mongoDbRepository.delete(entity);
+	}
+
+	@Override
+	public boolean existsById(String id) {
+		return mongoDbRepository.existsById(id);
 	}
 
 }

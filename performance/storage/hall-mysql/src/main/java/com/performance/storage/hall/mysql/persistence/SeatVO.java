@@ -1,6 +1,6 @@
-package com.performance.storage.hall.mysql;
+package com.performance.storage.hall.mysql.persistence;
 
-import com.ticketing.performance.common.SeatType;
+import com.performance.common.SeatType;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -21,13 +21,9 @@ public class SeatVO {
 	@Enumerated(EnumType.STRING)
 	SeatType type;
 
-	Boolean isAvailable;
-
-	public SeatVO(Integer seatNumber, Character section, SeatType type, Boolean isAvailable){
+	public SeatVO(Integer seatNumber, Character section, SeatType type){
 		this.seatNumber = seatNumber;
 		this.section = section;
 		this.type = type;
-		this.isAvailable = isAvailable;
 	}
-
 }

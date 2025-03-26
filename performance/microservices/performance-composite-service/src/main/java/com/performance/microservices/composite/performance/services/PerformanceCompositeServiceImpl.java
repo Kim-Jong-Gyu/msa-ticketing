@@ -16,7 +16,8 @@ import com.performance.api.composite.performance.ServiceAddresses;
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
 import com.performance.api.core.performance.Performance;
-import com.performance.api.core.performance.ScheduleDto;
+import com.performance.api.core.performance.Schedule;
+import com.performance.common.SeatType;
 import com.performance.util.exceptions.NotFoundException;
 import com.performance.util.http.ServiceUtil;
 
@@ -42,10 +43,10 @@ public class PerformanceCompositeServiceImpl implements PerformanceCompositeServ
 			throw new NotFoundException("No performance found for performanceId: " + performanceId);
 
 		List<Hall> hallList = new ArrayList<>();
-		for (ScheduleDto schedule : performance.scheduleList()) {
-			Hall hall = integration.getHall(schedule.hallId());
+		for (Schedule schedule : performance.getScheduleList()) {
+			Hall hall = integration.getHall(schedule.getHallId());
 			if (hall == null)
-				throw new NotFoundException("No hall found for hallId: " + schedule.hallId());
+				throw new NotFoundException("No hall found for hallId: " + schedule.getHallId());
 			hallList.add(hall);
 		}
 
@@ -57,23 +58,22 @@ public class PerformanceCompositeServiceImpl implements PerformanceCompositeServ
 		List<ScheduleSummaryWithSeats> scheduleSummaryWithSeat = new ArrayList<>();
 		for (int i = 0; i < hallList.size(); i++) {
 			List<PerformanceSeat> performanceSeats = new ArrayList<>();
-			String hallName = hallList.get(i).hallName();
-			ScheduleDto nowSchedule = performance.scheduleList().get(i);
-			LocalDateTime performanceDate = nowSchedule.performanceDate();
-			Integer hallId = nowSchedule.hallId();
-			for (Seat seat : hallList.get(i).seatList()) {
-				Integer price = performance.pricePolicies().get(seat.type());
-				PerformanceSeat performanceSeat = new PerformanceSeat(seat.seatNumber(), seat.section(),
-					seat.isAvailable(), price);
+			String hallName = hallList.get(i).getHallName();
+			Schedule nowSchedule = performance.getScheduleList().get(i);
+			LocalDateTime performanceDate = nowSchedule.getPerformanceDate();
+			Integer hallId = nowSchedule.getHallId();
+			for (Seat seat : hallList.get(i).getSeatList()) {
+				Integer price = performance.getPricePolicies().get(SeatType.VIP);
+				PerformanceSeat performanceSeat = new PerformanceSeat(seat.getSeatNumber(), seat.getSection(),true, price);
 				performanceSeats.add(performanceSeat);
 			}
 			scheduleSummaryWithSeat.add(
 				new ScheduleSummaryWithSeats(new ScheduleSummary(performanceDate, hallId, hallName), performanceSeats));
 		}
-		String performanceAddress = performance.serviceAddress();
-		String hallAddress = !hallList.isEmpty() ? hallList.get(0).serviceAddress() : "";
+		String performanceAddress = performance.getServiceAddress();
+		String hallAddress = !hallList.isEmpty() ? hallList.get(0).getServiceAddress() : "";
 		ServiceAddresses serviceAddresses = new ServiceAddresses(serviceAddress, hallAddress, performanceAddress);
-		return new PerformanceAggregate(performance.performanceId(), scheduleSummaryWithSeat,
+		return new PerformanceAggregate(performance.getPerformanceId(), scheduleSummaryWithSeat,
 			serviceAddresses);
 	}
 }

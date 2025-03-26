@@ -15,7 +15,7 @@ import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.exceptions.NotFoundException;
 
 @RestControllerAdvice
-class GlobalControllerExceptionHandler {
+public class GlobalControllerExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 

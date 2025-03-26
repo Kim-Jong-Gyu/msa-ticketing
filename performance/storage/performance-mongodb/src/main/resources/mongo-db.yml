@@ -22,4 +22,16 @@ storage:
       port: 27017
       database: performance-db
 
+---
 
+spring:
+  config:
+    activate:
+      on-profile: test
+
+storage:
+  datasource:
+    core:
+      host: localhost
+      port: 1
+      database: test-db

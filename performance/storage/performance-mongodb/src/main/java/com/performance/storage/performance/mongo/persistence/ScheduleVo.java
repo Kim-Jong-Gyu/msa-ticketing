@@ -1,4 +1,4 @@
-package com.performance.storage.performance.mongo;
+package com.performance.storage.performance.mongo.persistence;
 
 import java.time.LocalDateTime;
 

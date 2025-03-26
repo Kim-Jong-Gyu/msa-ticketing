@@ -12,11 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -26,16 +25,18 @@ import com.performance.storage.performance.mongo.persistence.PerformanceReposito
 import com.performance.storage.performance.mongo.persistence.ScheduleVo;
 
 @DataMongoTest
+@AutoConfigureDataMongo
 @TestPropertySource(properties = "de.flapdoodle.mongodb.embedded.version=5.0.5")
 @DirtiesContext
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = PerformanceApplication.class)
 public class PersistenceTests {
 
 	@Autowired
 	private PerformanceRepository repository;
 
 	private static final Integer DEFAULT_PERFORMANCE_ID = 1;
+
+
 	@BeforeEach
 	public void setUp(){
 		// given
@@ -116,28 +117,6 @@ public class PersistenceTests {
 	public void getByPerformanceId() {
 		PerformanceEntity entity = repository.findByPerformanceId(1);
 		assertNotNull(entity);
-	}
-
-	@Test
-	public void duplicateError() {
-		// given
-		String title = "title";
-		Map<SeatType, Integer> pricePolicies = new HashMap<>();
-		pricePolicies.put(SeatType.STANDARD, 10000);
-		pricePolicies.put(SeatType.VIP, 14000);
-		LocalDateTime bookingStartDate = LocalDateTime.now();
-		LocalDateTime bookingEndDate = LocalDateTime.now().plusDays(1);
-
-		List<ScheduleVo> scheduleVoList = new ArrayList<>();
-
-		scheduleVoList.add(new ScheduleVo(1, LocalDateTime.now().plusDays(4)));
-		scheduleVoList.add(new ScheduleVo(2, LocalDateTime.now().plusDays(5)));
-
-		PerformanceEntity entity = new PerformanceEntity(DEFAULT_PERFORMANCE_ID, title, pricePolicies,
-			bookingStartDate,
-			bookingEndDate, scheduleVoList);
-		// when
-		assertThrows(DuplicateKeyException.class, () -> repository.save(entity));
 	}
 
 

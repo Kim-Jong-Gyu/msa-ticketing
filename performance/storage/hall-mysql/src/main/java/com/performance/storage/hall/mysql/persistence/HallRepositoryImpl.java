@@ -1,4 +1,4 @@
-package com.performance.storage.hall.mysql;
+package com.performance.storage.hall.mysql.persistence;
 
 
 import org.springframework.stereotype.Repository;

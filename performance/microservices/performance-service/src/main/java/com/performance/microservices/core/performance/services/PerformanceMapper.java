@@ -6,9 +6,9 @@ import org.mapstruct.Mappings;
 
 import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.Schedule;
-import com.performance.storage.performance.mongo.PerformanceEntity;
-import com.performance.storage.performance.mongo.ScheduleVo;
-import com.ticketing.performance.common.SeatType;
+import com.performance.storage.performance.mongo.persistence.PerformanceEntity;
+import com.performance.storage.performance.mongo.persistence.ScheduleVo;
+import com.performance.common.SeatType;
 
 @Mapper(componentModel = "spring")
 public interface PerformanceMapper {

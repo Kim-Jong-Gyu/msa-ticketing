@@ -1,8 +1,4 @@
-package com.performance.storage.hall.mysql;
-
-import java.util.Optional;
-
-import com.performance.storage.hall.mysql.HallEntity;
+package com.performance.storage.hall.mysql.persistence;
 
 public interface HallRepository {
 

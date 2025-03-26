@@ -13,20 +13,23 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.performance.storage.hall.mysql.config.JpaConfig;
-import com.ticketing.performance.common.SeatType;
+import com.performance.common.SeatType;
+import com.performance.storage.hall.mysql.persistence.HallEntity;
+import com.performance.storage.hall.mysql.persistence.HallJpaRepository;
+import com.performance.storage.hall.mysql.persistence.SeatVO;
 
 @DataJpaTest
-@Import({JpaConfig.class})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@ActiveProfiles("test")
 public class PersistenceTests {
 
 	@Autowired
 	HallJpaRepository repository;
-
 
 	private static final Integer DEFAULT_HALL_ID = 1;
 
@@ -40,7 +43,7 @@ public class PersistenceTests {
 		char[] section = {'A', 'B', 'C', 'D'};
 		for (char c : section) {
 			for (int j = 1; j <= 10; j++) {
-				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD, true));
+				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD));
 			}
 		}
 		HallEntity entity = new HallEntity(DEFAULT_HALL_ID, hallName, seatVOList);
@@ -58,7 +61,7 @@ public class PersistenceTests {
 		char[] section = {'A', 'B', 'C', 'D'};
 		for (char c : section) {
 			for (int j = 1; j <= 10; j++) {
-				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD, true));
+				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD));
 			}
 		}
 
@@ -113,7 +116,7 @@ public class PersistenceTests {
 		char[] section = {'A', 'B', 'C', 'D'};
 		for (char c : section) {
 			for (int j = 1; j <= 10; j++) {
-				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD, true));
+				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD));
 			}
 		}
 		HallEntity entity = new HallEntity(DEFAULT_HALL_ID, hallName, seatVOList);

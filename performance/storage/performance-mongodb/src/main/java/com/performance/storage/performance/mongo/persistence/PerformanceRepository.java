@@ -1,4 +1,4 @@
-package com.performance.storage.performance.mongo;
+package com.performance.storage.performance.mongo.persistence;
 
 
 public interface PerformanceRepository {
@@ -8,4 +8,10 @@ public interface PerformanceRepository {
 	PerformanceEntity save(PerformanceEntity performanceEntity);
 
 	void deleteAll();
+
+	Integer count();
+
+	void delete(PerformanceEntity entity);
+
+	boolean existsById(String id);
 }

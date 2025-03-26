@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.HallService;
-import com.performance.storage.hall.mysql.HallEntity;
-import com.performance.storage.hall.mysql.HallRepository;
+import com.performance.microservices.core.hall.services.HallMapper;
+import com.performance.storage.hall.mysql.persistence.HallEntity;
+import com.performance.storage.hall.mysql.persistence.HallRepository;
 import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.http.ServiceUtil;
 
 @RestController
 public class HallServiceImpl implements HallService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(HallServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(HallService.class);
 
 	private final ServiceUtil serviceUtil;
 
@@ -34,7 +35,6 @@ public class HallServiceImpl implements HallService {
 	public Hall getHall(Integer hallId) {
 		if (hallId < 1)
 			throw new InvalidInputException("Invalid hallId: " + hallId);
-
 		HallEntity entity = repository.findByHallId(hallId);
 		Hall response = mapper.entityToApi(entity);
 		response.setServiceAddress(serviceUtil.getServiceAddress());

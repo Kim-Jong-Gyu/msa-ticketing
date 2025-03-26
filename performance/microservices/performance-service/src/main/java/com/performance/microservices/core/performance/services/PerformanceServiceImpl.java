@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.performance.api.core.performance.Performance;
 import com.performance.api.core.performance.PerformanceService;
-import com.performance.storage.performance.mongo.PerformanceEntity;
-import com.performance.storage.performance.mongo.PerformanceRepository;
+import com.performance.storage.performance.mongo.persistence.PerformanceEntity;
+import com.performance.storage.performance.mongo.persistence.PerformanceRepository;
 import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.http.ServiceUtil;
 

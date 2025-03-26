@@ -2,6 +2,7 @@ package com.performance.microservices.core.hall;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.http.MediaType.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,34 +12,41 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
-import com.performance.api.core.performance.Performance;
 import com.performance.microservices.core.hall.services.HallMapper;
+import com.performance.microservices.core.hall.services.HallMapperImpl;
 import com.performance.microservices.core.hall.services.HallServiceImpl;
-import com.performance.storage.hall.mysql.HallEntity;
-import com.performance.storage.hall.mysql.HallRepository;
-import com.performance.storage.hall.mysql.SeatVO;
+import com.performance.storage.hall.mysql.persistence.HallEntity;
+import com.performance.storage.hall.mysql.persistence.HallRepository;
+import com.performance.storage.hall.mysql.persistence.SeatVO;
 import com.performance.util.exceptions.InvalidInputException;
 import com.performance.util.http.ServiceUtil;
-import com.ticketing.performance.common.SeatType;
+import com.performance.common.SeatType;
 
-@ExtendWith(MockitoExtension.class)
+@WebFluxTest(controllers = HallServiceImpl.class)
+@Import({HallMapperImpl.class})
+@ContextConfiguration(classes = HallTestApplication.class)
 public class HallServiceTest {
 
-	@Mock
+	@Autowired
+	private WebTestClient webTestClient;
+
+	@MockitoBean
 	private HallRepository repository;
 
-	@Mock
+	@Autowired
 	private HallMapper mapper;
 
-	@Mock
+	@MockitoBean
 	private ServiceUtil serviceUtil;
-
-	@InjectMocks
-	private HallServiceImpl hallService;
-
 
 	@Test
 	void getHall_validId_success(){
@@ -46,41 +54,40 @@ public class HallServiceTest {
 		Integer hallId = 1;
 		HallEntity mockEntity = createMockHallEntity(hallId);
 
-		Hall expectedHall = createMockHall(hallId);
-		expectedHall.setServiceAddress("localhost");
+		Hall expectedHall = mapper.entityToApi(mockEntity);
 
 		given(repository.findByHallId(hallId)).willReturn(mockEntity);
-		given(mapper.entityToApi(mockEntity)).willReturn(expectedHall);
 		given(serviceUtil.getServiceAddress()).willReturn("localhost");
 
-		// when
-
-		Hall result = hallService.getHall(hallId);
-
-		// then
-		assertNotNull(result);
-		assertEquals(hallId, result.getHallId());
-		assertEquals("localhost", result.getServiceAddress());
+		// when & then
+		webTestClient.get()
+			.uri("/hall/{id}", hallId)
+			.accept(APPLICATION_JSON)
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody()
+			.jsonPath("$.hallId").isEqualTo(expectedHall.getHallId())
+			.jsonPath("$.serviceAddress").isEqualTo("localhost");
 
 		then(repository).should(times(1)).findByHallId(hallId);
-		then(mapper).should(times(1)).entityToApi(mockEntity);
 	}
 
 
 	@Test
-	void getPerformance_invalidId_throwsException() {
+	void getHall_invalidId_throwsException() {
 		// Given
-		int invalidPerformanceId = -1;
+		int invalidHallId = -1;
 
-		// When
-		InvalidInputException exception = assertThrows(InvalidInputException.class, () -> {
-			hallService.getHall(invalidPerformanceId);
-		});
+		webTestClient.get()
+			.uri("/hall/{hallId}", invalidHallId)
+			.accept(APPLICATION_JSON)
+			.exchange()
+			.expectStatus().isEqualTo(422) // UNPROCESSABLE_ENTITY
+			.expectBody()
+			.jsonPath("$.message").isEqualTo("Invalid hallId: " + invalidHallId);
 
-		// Then
-		assertEquals("Invalid performanceId " + invalidPerformanceId, exception.getMessage());
+		then(repository).should(times(0)).findByHallId(any());
 
-		then(repository).should(times(0)).findByHallId(anyInt());
 	}
 
 	@Test
@@ -89,25 +96,27 @@ public class HallServiceTest {
 		Integer hallId = 2;
 		Hall input = createMockHall(hallId);
 
-		HallEntity entityToSave = createMockHallEntity(hallId);
+		HallEntity entity = mapper.apiToEntity(input);
 
 		HallEntity savedEntity = createMockHallEntity(hallId);
 
-		Hall expectedPerformance = createMockHall(hallId);
+		Hall response = mapper.entityToApi(savedEntity);
 
-		given(mapper.apiToEntity(input)).willReturn(entityToSave);
-		given(repository.save(entityToSave)).willReturn(savedEntity);
-		given(mapper.entityToApi(savedEntity)).willReturn(expectedPerformance);
+		given(repository.save(any(HallEntity.class))).willReturn(savedEntity);
+
 
 		// When
-		Hall result = hallService.createHall(input);
+		webTestClient.post()
+			.uri("/hall")
+			.contentType(APPLICATION_JSON)
+			.bodyValue(input)
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody()
+			.jsonPath("$.hallId").isEqualTo(response.getHallId())
+			.jsonPath("$.hallName").isEqualTo(response.getHallName());
 
-		// Then
-		assertNotNull(result);
-		assertEquals(input.getHallId(), result.getHallId());
-		then(mapper).should(times(1)).apiToEntity(input);
-		then(repository).should(times(1)).save(entityToSave);
-		then(mapper).should(times(1)).entityToApi(savedEntity);
+		then(repository).should(times(1)).save(any(HallEntity.class));
 	}
 
 
@@ -118,7 +127,7 @@ public class HallServiceTest {
 		char[] section = {'A', 'B', 'C', 'D'};
 		for (char c : section) {
 			for (int j = 1; j <= 10; j++) {
-				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD, true));
+				seatVOList.add(new SeatVO(j, c, SeatType.STANDARD));
 			}
 		}
 		return new HallEntity(hallId, hallName, seatVOList);
@@ -130,11 +139,9 @@ public class HallServiceTest {
 		char[] section = {'A', 'B', 'C', 'D'};
 		for (char c : section) {
 			for (int j = 1; j <= 10; j++) {
-				seatList.add(new Seat(j, c, "STANDARD", true));
+				seatList.add(new Seat(j, c, "STANDARD"));
 			}
 		}
 		return new Hall(hallId, hallName, seatList);
 	}
-
-
 }

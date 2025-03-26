@@ -1,9 +1,8 @@
-package com.performance.storage.performance.mongo;
+package com.performance.storage.performance.mongo.persistence;
 
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 public interface MongoDbRepository extends MongoRepository<PerformanceEntity, String> {
 

@@ -8,9 +8,9 @@ import org.mapstruct.Mappings;
 
 import com.performance.api.core.hall.Hall;
 import com.performance.api.core.hall.Seat;
-import com.performance.storage.hall.mysql.HallEntity;
-import com.performance.storage.hall.mysql.SeatVO;
-import com.ticketing.performance.common.SeatType;
+import com.performance.storage.hall.mysql.persistence.HallEntity;
+import com.performance.storage.hall.mysql.persistence.SeatVO;
+import com.performance.common.SeatType;
 
 @Mapper(componentModel = "spring")
 public interface HallMapper {

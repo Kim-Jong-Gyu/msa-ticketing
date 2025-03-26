@@ -49,33 +49,82 @@ public class PerformanceCompositeIntegration implements PerformanceService, Hall
 		this.restTemplate = restTemplate;
 		this.mapper = objectMapper;
 
-		performanceServiceUrl = "http://" + performanceServiceHost + ":" + performanceServicePort + "/performance/";
-		hallServiceUrl = "http://" + hallServiceHost + ":" + hallServicePort + "/hall/";
+		performanceServiceUrl = "http://" + performanceServiceHost + ":" + performanceServicePort + "/performance";
+		hallServiceUrl = "http://" + hallServiceHost + ":" + hallServicePort + "/hall";
 	}
 
 	@Override
-	public Hall getHall(int hallId) {
-
+	public Hall getHall(Integer hallId) {
 		try {
-			String url = hallServiceUrl + hallId;
+			String url = hallServiceUrl + "/" + hallId;
 			LOG.debug("Will call getHall API on URL : {}", url);
 
 			Hall hall = restTemplate.getForObject(url, Hall.class);
-			LOG.debug("Found a hall with id : {}", hall.hallId());
+			LOG.debug("Found a hall with id : {}", hall.getHallId());
 
 			return hall;
+		} catch (HttpClientErrorException ex) {
+			throw handleHttpClientException(ex);
 		}
-		catch (HttpClientErrorException ex) {
-			HttpStatusCode statusCode = ex.getStatusCode();
-			if (statusCode.equals(NOT_FOUND)) {
-				throw new NotFoundException(getErrorMessage(ex));
-			} else if (statusCode.equals(UNPROCESSABLE_ENTITY)) {
-				throw new InvalidInputException(getErrorMessage(ex));
-			}
-			LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", ex.getStatusCode());
-			LOG.warn("Error body: {}", ex.getResponseBodyAsString());
-			throw ex;
+	}
+
+
+	@Override
+	public Hall createHall(Hall body) {
+		try {
+			String url = hallServiceUrl;
+			LOG.debug("Will post a new hall to URL: {}", url);
+
+			Hall hall = restTemplate.postForObject(url, body, Hall.class);
+			LOG.debug("Created a hall with id: {}", hall.getHallId());
+
+			return hall;
+		}catch (HttpClientErrorException ex){
+			throw handleHttpClientException(ex);
 		}
+	}
+
+	@Override
+	public Performance getPerformance(Integer performanceId) {
+		try {
+			String url = performanceServiceUrl + "/" + performanceId;
+			LOG.debug("Will call getPerformance API on URL : {}", url);
+
+			Performance performance = restTemplate.getForObject(url, Performance.class);
+			LOG.debug("Found a  with id : {}", performance.getPerformanceId());
+
+			return performance;
+		} catch (HttpClientErrorException ex) {
+			throw handleHttpClientException(ex);
+		}
+	}
+
+	@Override
+	public Performance createPerformance(Performance body) {
+		try {
+			String url = performanceServiceUrl;
+			LOG.debug("Will post a new performance to URL: {}", url);
+
+			Performance performance = restTemplate.postForObject(url, body, Performance.class);
+			LOG.debug("Created a performance with id: {}", performance.getPerformanceId());
+
+			return performance;
+		}
+		catch (HttpClientErrorException ex){
+			throw handleHttpClientException(ex);
+		}
+	}
+
+	private RuntimeException handleHttpClientException(HttpClientErrorException ex) {
+		HttpStatusCode statusCode = ex.getStatusCode();
+		if (statusCode.equals(NOT_FOUND)) {
+			return new NotFoundException(getErrorMessage(ex));
+		} else if (statusCode.equals(UNPROCESSABLE_ENTITY)) {
+			return new InvalidInputException(getErrorMessage(ex));
+		}
+		LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", ex.getStatusCode());
+		LOG.warn("Error body: {}", ex.getResponseBodyAsString());
+		return ex;
 	}
 
 	private String getErrorMessage(HttpClientErrorException ex) {
@@ -83,29 +132,6 @@ public class PerformanceCompositeIntegration implements PerformanceService, Hall
 			return mapper.readValue(ex.getResponseBodyAsString(), HttpErrorInfo.class).getMessage();
 		} catch (IOException ioex) {
 			return ex.getMessage();
-		}
-	}
-
-	@Override
-	public Performance getPerformance(int performanceId) {
-		try {
-			String url = performanceServiceUrl + performanceId;
-			LOG.debug("Will call getPerformance API on URL : {}", url);
-
-			Performance performance = restTemplate.getForObject(url, Performance.class);
-			LOG.debug("Found a  with id : {}", performance.performanceId());
-
-			return performance;
-		} catch (HttpClientErrorException ex) {
-			HttpStatusCode statusCode = ex.getStatusCode();
-			if (statusCode.equals(NOT_FOUND)) {
-				throw new NotFoundException(getErrorMessage(ex));
-			} else if (statusCode.equals(UNPROCESSABLE_ENTITY)) {
-				throw new InvalidInputException(getErrorMessage(ex));
-			}
-			LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", ex.getStatusCode());
-			LOG.warn("Error body: {}", ex.getResponseBodyAsString());
-			throw ex;
 		}
 	}
 }
