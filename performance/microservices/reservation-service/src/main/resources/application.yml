@@ -1,0 +1,22 @@
+server:
+  port: 8003
+  error:
+    include-message: always
+spring:
+  config:
+    import:
+      - core-db.yml
+
+logging:
+  level:
+    root: INFO
+    com.performance: DEBUG
+
+---
+spring:
+  profiles:
+    active: docker
+#  datasource:
+#    url: jdbc:mysql://mysql/hall-db
+
+server.port: 8080

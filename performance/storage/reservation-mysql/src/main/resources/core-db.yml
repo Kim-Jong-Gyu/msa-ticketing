@@ -1,0 +1,43 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+storage:
+  datasource:
+    core:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/hall-db
+      username: user
+      password: pwd
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+---
+spring.config.activate.on-profile: docker
+
+spring.datasource.hikari.initializationFailTimeout: 60000
+
+storage:
+  datasource:
+    core:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://mysql/hall-db
+      username: user
+      password: pwd
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+---
+spring.config.activate.on-profile: test
+
+storage:
+  datasource:
+    core:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:core;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      pool-name: core-db-pool
+      data-source-properties:
+        rewriteBatchedStatements: true
+

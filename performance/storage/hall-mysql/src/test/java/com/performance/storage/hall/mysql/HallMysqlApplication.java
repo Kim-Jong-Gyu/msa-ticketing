@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
-@ConfigurationPropertiesScan(basePackages = "com.performance.storage.hall")
 @ActiveProfiles("test")
 public class HallMysqlApplication {
 	public static void main(String[] args) {
