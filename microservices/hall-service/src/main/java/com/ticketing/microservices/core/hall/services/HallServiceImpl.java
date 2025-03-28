@@ -11,8 +11,8 @@ import com.ticketing.api.core.hall.Hall;
 import com.ticketing.api.core.hall.HallService;
 import com.ticketing.api.core.hall.HallWithSeat;
 import com.ticketing.api.core.hall.HallWithUnavailable;
-import com.ticketing.storage.hall.mysql.persistence.HallEntity;
-import com.ticketing.storage.hall.mysql.persistence.HallRepository;
+import com.ticketing.storage.core.hall.persistence.HallEntity;
+import com.ticketing.storage.core.hall.persistence.HallRepository;
 import com.ticketing.util.exceptions.InvalidInputException;
 import com.ticketing.util.http.ServiceUtil;
 

@@ -9,7 +9,9 @@ import com.ticketing.api.core.performance.Performance;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "composite REST API", description = "REST API for composite information.")
 public interface CreateHallService {
 
 	@Operation(

@@ -1,4 +1,4 @@
-package com.ticketing.storage.hall.mysql;
+package com.ticketing.storage.core.hall;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

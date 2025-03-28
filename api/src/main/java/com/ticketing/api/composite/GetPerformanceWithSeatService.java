@@ -24,5 +24,5 @@ public interface GetPerformanceWithSeatService {
 	@GetMapping(
 		value = "/composite/performance-seat/{performanceId}",
 		produces = "application/json")
-	PerformanceWithSeat getPerformanceWithSeat(@PathVariable int performanceId);
+	PerformanceWithSeat getPerformanceWithSeat(@PathVariable("performanceId") Integer performanceId);
 }

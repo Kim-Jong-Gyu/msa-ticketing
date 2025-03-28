@@ -38,10 +38,6 @@ public interface ReservationMapper {
 
 	ReservedLineVo reservedLineToReservedLineValue(ReservedLine reservedLine);
 
-	ReservationStatus stringStatusToEnumStatus(String status);
-
-	String enumStatusToStringStatus(ReservationStatus reservationStatus);
-
 	@Mappings({
 		@Mapping(target = "serviceAddress", ignore = true),
 	})

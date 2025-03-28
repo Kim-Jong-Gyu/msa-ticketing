@@ -42,7 +42,7 @@ public class GetPerformanceWithSeatServiceImpl implements GetPerformanceWithSeat
 	}
 
 	@Override
-	public PerformanceWithSeat getPerformanceWithSeat(int performanceId) {
+	public PerformanceWithSeat getPerformanceWithSeat(Integer performanceId) {
 
 		// Performance
 		Performance performance = integration.getPerformance(performanceId);

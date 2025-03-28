@@ -1,4 +1,4 @@
-package com.ticketing.storage.hall.mysql;
+package com.ticketing.storage.core.hall;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,11 +19,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ticketing.common.SeatType;
-import com.ticketing.storage.hall.mysql.persistence.HallEntity;
-import com.ticketing.storage.hall.mysql.persistence.HallJpaRepository;
-import com.ticketing.storage.hall.mysql.persistence.HallRepository;
-import com.ticketing.storage.hall.mysql.persistence.HallRepositoryImpl;
-import com.ticketing.storage.hall.mysql.persistence.SeatVO;
+import com.ticketing.storage.core.hall.persistence.HallEntity;
+import com.ticketing.storage.core.hall.persistence.HallJpaRepository;
+import com.ticketing.storage.core.hall.persistence.HallRepository;
+import com.ticketing.storage.core.hall.persistence.HallRepositoryImpl;
+import com.ticketing.storage.core.hall.persistence.SeatVO;
 
 @DataJpaTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)

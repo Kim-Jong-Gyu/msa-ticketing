@@ -3,11 +3,17 @@ spring:
     hibernate:
       ddl-auto: update
 
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
 storage:
   datasource:
     core:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/hall-db
+      jdbc-url: jdbc:mysql://localhost:3306/reservation-db
       username: user
       password: pwd
       data-source-properties:
@@ -16,15 +22,15 @@ storage:
 ---
 spring.config.activate.on-profile: docker
 
-spring.datasource.hikari.initializationFailTimeout: 60000
-
 storage:
   datasource:
     core:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://mysql/hall-db
+      jdbc-url: jdbc:mysql://mysql/reservation-db
       username: user
       password: pwd
+      initializationFailTimeout: 60000
+      connection-timeout: 60000
       data-source-properties:
         rewriteBatchedStatements: true
 

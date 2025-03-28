@@ -22,9 +22,9 @@ import com.ticketing.api.core.hall.Seat;
 import com.ticketing.microservices.core.hall.services.HallMapper;
 import com.ticketing.microservices.core.hall.services.HallMapperImpl;
 import com.ticketing.microservices.core.hall.services.HallServiceImpl;
-import com.ticketing.storage.hall.mysql.persistence.HallEntity;
-import com.ticketing.storage.hall.mysql.persistence.HallRepository;
-import com.ticketing.storage.hall.mysql.persistence.SeatVO;
+import com.ticketing.storage.core.hall.persistence.HallEntity;
+import com.ticketing.storage.core.hall.persistence.HallRepository;
+import com.ticketing.storage.core.hall.persistence.SeatVO;
 import com.ticketing.util.http.ServiceUtil;
 import com.ticketing.common.SeatType;
 

@@ -1,4 +1,4 @@
-package com.ticketing.storage.hall.mysql.persistence;
+package com.ticketing.storage.core.hall.persistence;
 
 import com.ticketing.common.SeatType;
 

@@ -20,10 +20,4 @@ public class HallWithSeat {
 		this.seatList = seatList;
 		this.serviceAddress = serviceAddress;
 	}
-
-	public HallWithSeat(Integer hallId, String hallName, List<Seat> seatList) {
-		this.hallId = hallId;
-		this.hallName = hallName;
-		this.seatList = seatList;
-	}
 }

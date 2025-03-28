@@ -4,13 +4,6 @@ storage:
       host: localhost
       port: 27017
       database: performance-db
-logging:
-  level:
-    root: INFO
-    com:
-      performance: DEBUG
-      org.hibernate.SQL: DEBUG
-
 
 ---
 spring.config.activate.on-profile: docker

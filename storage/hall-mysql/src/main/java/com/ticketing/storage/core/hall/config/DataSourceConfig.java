@@ -1,4 +1,4 @@
-package com.ticketing.storage.hall.mysql.config;
+package com.ticketing.storage.core.hall.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -21,6 +21,7 @@ public class DataSourceConfig {
 
 	@Bean
 	public HikariDataSource coreDataSource(@Qualifier("coreHikariConfig") HikariConfig config) {
+
 		return new HikariDataSource(config);
 	}
 

@@ -1,7 +1,6 @@
 services:
   performance:
     build: microservices/performance-service
-    mem_limit: 350m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -9,16 +8,22 @@ services:
 
   hall:
     build: microservices/hall-service
-    mem_limit: 350m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       mysql:
         condition: service_healthy
 
-  performance-composite:
-    build: microservices/performance-composite-service
-    mem_limit: 350m
+  reservation:
+    build: microservices/reservation-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  composite:
+    build: microservices/composite-service
     ports:
       - "8080:8080"
     environment:
@@ -26,17 +31,11 @@ services:
 
   mongodb:
     image: mongo
-    mem_limit: 350m
     ports:
       - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    command: ["mongod", "--dbpath", "/data/db"]
-
 
   mysql:
     image: mysql
-    mem_limit: 350m
     ports:
       - "3306:3306"
     environment:
@@ -44,11 +43,10 @@ services:
       - MYSQL_DATABASE=hall-db
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pwd
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-uuser", "-ppwd", "-h", "localhost" ]
       interval: 10s
       timeout: 5s
       retries: 10
-
-volumes:
-  mongodb_data:

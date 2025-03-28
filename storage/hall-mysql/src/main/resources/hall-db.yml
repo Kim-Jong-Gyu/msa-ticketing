@@ -3,6 +3,12 @@ spring:
     hibernate:
       ddl-auto: update
 
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
 storage:
   datasource:
     core:
@@ -15,9 +21,6 @@ storage:
 
 ---
 spring.config.activate.on-profile: docker
-
-spring.datasource.hikari.initializationFailTimeout: 60000
-
 storage:
   datasource:
     core:
@@ -25,6 +28,8 @@ storage:
       jdbc-url: jdbc:mysql://mysql/hall-db
       username: user
       password: pwd
+      initializationFailTimeout: 60000
+      connection-timeout: 60000
       data-source-properties:
         rewriteBatchedStatements: true
 

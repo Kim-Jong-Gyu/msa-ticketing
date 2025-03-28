@@ -5,12 +5,14 @@ server:
 spring:
   config:
     import:
-      - mysql-db.yml
+      - hall-db.yml
 
 logging:
   level:
     root: INFO
-    com.performance: DEBUG
+    com.ticketing: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 ---
 spring:

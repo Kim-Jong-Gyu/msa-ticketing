@@ -1,7 +1,5 @@
 package com.ticketing.microservices.core.hall.services;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -9,11 +7,7 @@ import org.mapstruct.Mappings;
 import com.ticketing.api.core.hall.Hall;
 import com.ticketing.api.core.hall.HallWithSeat;
 import com.ticketing.api.core.hall.HallWithUnavailable;
-import com.ticketing.api.core.hall.Seat;
-import com.ticketing.storage.hall.mysql.persistence.HallEntity;
-import com.ticketing.storage.hall.mysql.persistence.SeatVO;
-import com.ticketing.common.SeatType;
-
+import com.ticketing.storage.core.hall.persistence.HallEntity;
 
 @Mapper(componentModel = "spring")
 public interface HallMapper {
@@ -38,14 +32,4 @@ public interface HallMapper {
 		@Mapping(target = "version", ignore = true)
 	})
 	HallEntity apiToEntity(Hall hall);
-
-	Seat seatVotoSeat(SeatVO seatVO);
-
-	SeatVO seatToSeatVo(Seat seat);
-
-	List<SeatVO> seatsToSeatVOs(List<Seat> seats);
-	List<Seat> seatVOsToSeats(List<SeatVO> seatVOs);
-
-	String entityToDto(SeatType type);
-	SeatType dtoToEntity(String dto);
 }

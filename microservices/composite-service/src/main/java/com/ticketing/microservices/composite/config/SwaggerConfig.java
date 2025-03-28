@@ -39,7 +39,7 @@ public class SwaggerConfig {
 		return GroupedOpenApi.builder()
 			.group("springdoc-openapi")
 			.pathsToMatch("/**")
-			.packagesToScan("com.performance.microservices.composite.performance")
+			.packagesToScan("com.ticketing")
 			.build();
 	}
 }

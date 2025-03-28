@@ -1,0 +1,7 @@
+CREATE DATABASE IF NOT EXISTS `hall-db`;
+CREATE DATABASE IF NOT EXISTS `reservation-db`;
+
+GRANT ALL PRIVILEGES ON `hall-db`.* TO 'user'@'%';
+GRANT ALL PRIVILEGES ON `reservation-db`.* TO 'user'@'%';
+
+FLUSH PRIVILEGES;
