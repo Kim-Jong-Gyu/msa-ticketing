@@ -30,6 +30,6 @@ public class CreateHallServiceImpl implements CreateHallService {
 	public CreateHall createHall(Hall body) {
 		Hall hall = integration.createHall(body);
 		return new CreateHall(hall.getHallId(),
-			new ServiceAddresses(serviceUtil.getServiceAddress(), hall.getServiceAddress(), null, null));
+			new ServiceAddresses(serviceUtil.getServiceAddress(), null, null, null));
 	}
 }

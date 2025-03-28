@@ -1,5 +1,7 @@
 package com.ticketing.microservices.core.hall.services;
 
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class HallServiceImpl implements HallService {
 
 	@Override
 	public Hall createHall(Hall body) {
+		if(body.getUnavailableDateList().isEmpty()){
+			body.setUnavailableDateList(new ArrayList<>());
+		}
 		HallEntity entity = mapper.apiToEntity(body);
 		HallEntity newEntity = repository.save(entity);
 		LOG.debug("createHall: entity created for hallId: {}", body.getHallId());
