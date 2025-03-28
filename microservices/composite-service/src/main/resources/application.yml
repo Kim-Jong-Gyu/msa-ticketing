@@ -1,0 +1,140 @@
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    groups-order: asc
+    tags-sorter: alpha
+    display-request-duration: true
+
+api:
+  common:
+    version: 1.0.0
+    title: Sample API
+    description: Description of the API...
+    termsOfServiceUrl: MINE TERMS OF SERVICE URL
+    license: License
+    licenseUrl: MY LICENSE URL
+
+    contact:
+      name: Kim-Jong-Gyu
+      url: my
+      email: whdrb2643@gmail.com
+
+  composite:
+    get-performance-with-seat:
+      description: Returns a composite view of the specified performanceId
+      notes: |
+        # Normal response
+        If the requested performance id is found the method will return information regarding:
+        1. performanceId 
+        2. seat list with price solved by performance price policy corresponding to the Performance Schedule
+        3. Service Addresses\n(technical information regarding the addresses of the microservices that created the response)
+
+        # Expected partial and error responses
+        In the following cases, only a partial response be created (used to simplify testing of error conditions)
+
+        ## Non numerical performance id
+        400 - A <b>Bad Request</b> error will be returned
+
+        ## performance id 13
+        404 - A <b>Not Found</b> error will be returned
+    create-reservation:
+      description: Returns a Reservation information about a generating reservation
+      notes: |
+        # Normal response
+        If the reservation created by requested data will return information regarding:
+        1. reservationId
+        2. Service Addresses\n(technical information regarding the addresses of the microservices that created the response)
+        
+        # Expected partial and error responses
+        In the following cases, only a partial response be created (used to simplify testing of error conditions)
+
+        ## Non numerical reservation id
+        400 - A <b>Bad Request</b> error will be returned
+        
+        ## Not existed performance id  
+        404 - A <b>Not Found</b> error will be returned
+        
+        ## Duplicated Reservation id 
+        422 - Unprocessable Entity</b> error with a "duplicate key" error message will be returned
+
+    create-performance:
+      description: Returns a performance information about a generating performance
+      notes: |
+        # Normal response
+        If the performance created by requested data will return information regarding:
+        1. performanceId
+        2. Service Addresses\n(technical information regarding the addresses of the microservices that created the response)
+        
+        # Expected partial and error responses
+        In the following cases, only a partial response be created (used to simplify testing of error conditions)
+
+        ## Non numerical performance id
+        400 - A <b>Bad Request</b> error will be returned
+        
+        ## Not existed hall id  
+        404 - A <b>Not Found</b> error will be returned
+        
+        ## Duplicated performance id 
+        422 - Unprocessable Entity</b> error with a "duplicate key" error message will be returned
+
+    create-hall:
+      description: Returns a hall information about a generating hall
+      notes: |
+        # Normal response
+        If the hall created by requested data will return information regarding:
+        1. hallId
+        2. Service Addresses\n(technical information regarding the addresses of the microservices that created the response)
+        
+        # Expected partial and error responses
+        In the following cases, only a partial response be created (used to simplify testing of error conditions)
+
+        ## Non numerical hall id
+        400 - A <b>Bad Request</b> error will be returned
+        
+        ## Duplicated hall id 
+        422 - Unprocessable Entity</b> error with a "duplicate key" error message will be returned
+
+server:
+  port: 8000
+  error:
+    include-message: always
+
+app:
+  performance-service:
+    host: localhost
+    port: 8001
+  hall-service:
+    host: localhost
+    port: 8002
+  reservation-service:
+    host: localhost
+    port: 8003
+
+logging:
+  level:
+    root: INFO
+    com.performance: DEBUG
+
+
+---
+spring:
+  profiles:
+    active: docker
+
+server.port: 8080
+
+app:
+  performance-service:
+    host: performance
+    port: 8080
+  hall-service:
+    host: hall
+    port: 8080
+  reservation-service:
+    host: reservation
+    port: 8080
