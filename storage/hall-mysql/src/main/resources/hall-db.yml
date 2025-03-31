@@ -28,10 +28,12 @@ storage:
       jdbc-url: jdbc:mysql://mysql/hall-db
       username: user
       password: pwd
-      initializationFailTimeout: 60000
-      connection-timeout: 60000
+      initializationFailTimeout: -1  # 초기 연결 실패 시 계속 재시도 (기본은 1ms)
+      connection-timeout: 30000      # 커넥션 풀에서 커넥션 얻을 때 대기 시간(ms)
       data-source-properties:
         rewriteBatchedStatements: true
+        socketTimeout: 30000
+        connectTimeout: 30000
 
 ---
 spring.config.activate.on-profile: test

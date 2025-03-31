@@ -115,6 +115,17 @@ public class CompositeIntegration implements PerformanceService, HallService, Re
 	}
 
 	@Override
+	public void deleteAllHall() {
+		try {
+			String url = hallServiceUrl + "/clean-up";
+			LOG.debug("Will call deleteAllHall API on URL : {}", url);
+			restTemplate.delete(url);
+		} catch (HttpClientErrorException ex) {
+			throw handleHttpClientException(ex);
+		}
+	}
+
+	@Override
 	public Performance getPerformance(Integer performanceId) {
 		try {
 			String url = performanceServiceUrl + "/" + performanceId;
@@ -160,6 +171,17 @@ public class CompositeIntegration implements PerformanceService, HallService, Re
 	}
 
 	@Override
+	public void deleteAllPerformance() {
+		try {
+			String url = performanceServiceUrl + "/clean-up";
+			LOG.debug("Will call deleteAllPerformance API on URL : {}", url);
+			restTemplate.delete(url);
+		} catch (HttpClientErrorException ex) {
+			throw handleHttpClientException(ex);
+		}
+	}
+
+	@Override
 	public Reservation getReservation(Integer reservationId) {
 		try {
 			String url = reservationServiceUrl + "/" + reservationId;
@@ -198,6 +220,17 @@ public class CompositeIntegration implements PerformanceService, HallService, Re
 			Reservation reservation = restTemplate.postForObject(url, body, Reservation.class);
 			LOG.debug("Created a reservation with id: {}", reservation.getReservationId());
 			return reservation;
+		} catch (HttpClientErrorException ex) {
+			throw handleHttpClientException(ex);
+		}
+	}
+
+	@Override
+	public void deleteAllReservation() {
+		try {
+			String url = reservationServiceUrl + "/clean-up";
+			LOG.debug("Will call deleteAllReservation API on URL: {}", url);
+			restTemplate.delete(url);
 		} catch (HttpClientErrorException ex) {
 			throw handleHttpClientException(ex);
 		}

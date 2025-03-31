@@ -2,6 +2,7 @@ package com.ticketing.api.core.performance;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +34,7 @@ public interface PerformanceService {
 		produces = "application/json")
 	Performance createPerformance(@RequestBody Performance performance);
 
+	@DeleteMapping(value = "/performance/clean-up")
+	void deleteAllPerformance();
 
 }

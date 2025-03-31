@@ -5,7 +5,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - mongodb
-
   hall:
     build: microservices/hall-service
     environment:

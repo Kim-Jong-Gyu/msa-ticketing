@@ -71,4 +71,10 @@ public class ReservationServiceImpl implements ReservationService {
 		LOG.debug("createReservation: create a reservation entity: {}/{}", body.getUserId(), body.getReservationId());
 		return mapper.entityToApi(newEntity);
 	}
+
+	@Override
+	public void deleteAllReservation() {
+		LOG.info("delete all data in reservation DB");
+		repository.deleteAll();
+	}
 }

@@ -2,6 +2,7 @@ package com.ticketing.api.core.reservation;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,4 +28,6 @@ public interface ReservationService {
 		produces = "application/json")
 	Reservation createReservation(@RequestBody Reservation body);
 
+	@DeleteMapping(value = "/reservation/clean-up")
+	void deleteAllReservation();
 }

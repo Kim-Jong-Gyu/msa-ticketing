@@ -64,4 +64,10 @@ public class HallServiceImpl implements HallService {
 		response.setServiceAddress(serviceUtil.getServiceAddress());
 		return response;
 	}
+
+	@Override
+	public void deleteAllHall() {
+		LOG.info("delete all data in hall DB");
+		repository.deleteAll();
+	}
 }

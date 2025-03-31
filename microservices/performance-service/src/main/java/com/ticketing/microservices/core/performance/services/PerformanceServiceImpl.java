@@ -67,4 +67,9 @@ public class PerformanceServiceImpl implements PerformanceService {
 		return mapper.entityToApi(newEntity);
 	}
 
+	@Override
+	public void deleteAllPerformance() {
+		LOG.info("delete all data in performance DB");
+		repository.deleteAll();
+	}
 }
