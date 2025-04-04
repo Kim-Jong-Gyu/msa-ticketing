@@ -1,6 +1,8 @@
 dependencies {
     implementation project(":common")
     implementation project(":util")
+    implementation('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring3x:4.20.0' // 최신 버전 권장
-    implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+    testImplementation('io.projectreactor:reactor-test')
+
 }

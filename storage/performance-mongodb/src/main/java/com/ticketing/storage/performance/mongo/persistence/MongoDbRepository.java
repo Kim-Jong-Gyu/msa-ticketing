@@ -2,10 +2,11 @@ package com.ticketing.storage.performance.mongo.persistence;
 
 import java.util.Optional;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Mono;
 
-public interface MongoDbRepository extends MongoRepository<PerformanceEntity, String> {
+public interface MongoDbRepository extends ReactiveCrudRepository<PerformanceEntity, String> {
 
-	Optional<PerformanceEntity> findByPerformanceId(Integer performanceId);
+	Mono<PerformanceEntity> findByPerformanceId(Integer performanceId);
 
 }

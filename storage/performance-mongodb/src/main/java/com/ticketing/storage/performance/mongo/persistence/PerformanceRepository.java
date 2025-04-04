@@ -1,9 +1,11 @@
 package com.ticketing.storage.performance.mongo.persistence;
 
 
+import reactor.core.publisher.Mono;
+
 public interface PerformanceRepository {
 
-	PerformanceEntity findByPerformanceId(Integer performanceId);
+	Mono<PerformanceEntity> findByPerformanceId(Integer performanceId);
 
 	PerformanceEntity save(PerformanceEntity performanceEntity);
 
@@ -13,5 +15,5 @@ public interface PerformanceRepository {
 
 	void delete(PerformanceEntity entity);
 
-	boolean existsById(String id);
+	Mono<Boolean> existsById(String id);
 }

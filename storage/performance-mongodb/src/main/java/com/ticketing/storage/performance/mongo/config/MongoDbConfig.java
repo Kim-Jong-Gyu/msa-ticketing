@@ -1,17 +1,18 @@
 package com.ticketing.storage.performance.mongo.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.mongo.ReactiveMongoClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.ticketing.storage.performance.mongo")
@@ -35,8 +36,8 @@ public class MongoDbConfig {
 	}
 
 	@Bean
-	public MongoTemplate mongoTemplate() {
-		return new MongoTemplate(mongoClient(), database);
+	public ReactiveMongoTemplate mongoTemplate() {
+		return new ReactiveMongoTemplate(mongoClient(), database);
 	}
 
 	@Bean
