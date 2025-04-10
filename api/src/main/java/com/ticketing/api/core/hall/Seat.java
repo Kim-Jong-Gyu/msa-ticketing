@@ -1,10 +1,12 @@
 package com.ticketing.api.core.hall;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Seat {
 
 	private Integer seatNumber;

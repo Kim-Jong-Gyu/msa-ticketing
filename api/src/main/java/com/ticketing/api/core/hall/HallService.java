@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import reactor.core.publisher.Mono;
 
 public interface HallService {
 
@@ -17,7 +18,7 @@ public interface HallService {
 	@GetMapping(
 		value = "/hall/seat/{hallId}",
 		produces = "application/json")
-	HallWithSeat getHallWithSeat(@PathVariable Integer hallId);
+	Mono<HallWithSeat> getHallWithSeat(@PathVariable("hallId") Integer hallId);
 
 
 	@PostMapping(
@@ -30,7 +31,7 @@ public interface HallService {
 	@GetMapping(
 		value = "/hall/unavailable/{hallId}",
 		produces = "application/json")
-	HallWithUnavailable getHallWithUnavailableList(@PathVariable Integer hallId);
+	Mono<HallWithUnavailable> getHallWithUnavailableList(@PathVariable("hallId") Integer hallId);
 
 	@DeleteMapping(value = "/hall/clean-up")
 	void deleteAllHall();

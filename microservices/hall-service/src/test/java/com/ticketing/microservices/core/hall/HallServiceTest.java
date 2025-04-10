@@ -1,35 +1,32 @@
 package com.ticketing.microservices.core.hall;
 
-import static org.mockito.BDDMockito.*;
-import static org.springframework.http.MediaType.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.reactive.server.WebTestClient;
-
 import com.ticketing.api.core.hall.Hall;
 import com.ticketing.api.core.hall.HallWithSeat;
 import com.ticketing.api.core.hall.HallWithUnavailable;
 import com.ticketing.api.core.hall.Seat;
+import com.ticketing.common.SeatType;
 import com.ticketing.microservices.core.hall.services.HallMapper;
-import com.ticketing.microservices.core.hall.services.HallMapperImpl;
 import com.ticketing.microservices.core.hall.services.HallServiceImpl;
 import com.ticketing.storage.core.hall.persistence.HallEntity;
 import com.ticketing.storage.core.hall.persistence.HallRepository;
 import com.ticketing.storage.core.hall.persistence.SeatVO;
 import com.ticketing.util.http.ServiceUtil;
-import com.ticketing.common.SeatType;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.scheduler.Scheduler;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.BDDMockito.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @WebFluxTest(controllers = HallServiceImpl.class)
-@Import({HallMapperImpl.class})
 @ContextConfiguration(classes = HallTestApplication.class)
 public class HallServiceTest {
 
@@ -40,10 +37,13 @@ public class HallServiceTest {
 	private HallRepository repository;
 
 	@Autowired
-	private HallMapper mapper;
+	HallMapper mapper;
 
 	@MockitoBean
 	private ServiceUtil serviceUtil;
+
+	@Autowired
+	private Scheduler scheduler;
 
 	@Test
 	void getHallWithSeat_validId_success(){
@@ -91,7 +91,7 @@ public class HallServiceTest {
 	void getHallWithUnavailable_success() {
 		// given
 		Integer hallId = 1;
-		HallEntity mockEntity = creatHallEntityWithUnavailable(hallId);
+		HallEntity mockEntity = createHallEntityWithUnavailable(hallId);
 
 		HallWithUnavailable expectedHall = mapper.entityToHallWithUnavailable(mockEntity);
 
@@ -135,7 +135,7 @@ public class HallServiceTest {
 	}
 
 
-	private HallEntity creatHallEntityWithUnavailable(Integer hallId) {
+	private HallEntity createHallEntityWithUnavailable(Integer hallId) {
 		String hallName = "name";
 		return new HallEntity(hallId, hallName, new ArrayList<>(),List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(2)));
 	}

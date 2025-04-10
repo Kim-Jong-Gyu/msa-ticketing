@@ -4,6 +4,7 @@ public interface HallRepository {
 
 
 	void deleteAll();
+
 	HallEntity findByHallIdWithSeat(Integer hallId);
 
 	HallEntity save(HallEntity entity);

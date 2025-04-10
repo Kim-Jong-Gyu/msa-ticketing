@@ -31,6 +31,7 @@ import com.ticketing.api.core.reservation.ReservationService;
 import com.ticketing.util.exceptions.InvalidInputException;
 import com.ticketing.util.exceptions.NotFoundException;
 import com.ticketing.util.http.HttpErrorInfo;
+import reactor.core.publisher.Mono;
 
 @Component
 public class CompositeIntegration implements PerformanceService, HallService, ReservationService {
@@ -70,7 +71,7 @@ public class CompositeIntegration implements PerformanceService, HallService, Re
 	}
 
 	@Override
-	public HallWithSeat getHallWithSeat(Integer hallId) {
+	public Mono<HallWithSeat> getHallWithSeat(Integer hallId) {
 		try {
 			String url = hallServiceUrl + "/seat/" + hallId;
 			LOG.debug("Will call getHallWithSeat API on URL : {}", url);
